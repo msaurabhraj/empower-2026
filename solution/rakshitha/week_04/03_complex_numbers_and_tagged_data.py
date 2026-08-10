@@ -85,29 +85,41 @@ def imag_part_polar(tagged_impedance: Impedance) -> float:
 def real_part(tagged_impedance: Impedance) -> float:
   """Returns the resistance regardless of whether tagged_impedance is rectangular- or polar-tagged, dispatching on type_tag to real_part_rectangular or real_part_polar."""
   if type_tag(tagged_impedance) == "rectangular":
-      return real_part_rectangular(tagged_impedance)
-  return real_part_polar(tagged_impedance)
+    return real_part_rectangular(tagged_impedance)
+  elif type_tag(tagged_impedance) == "polar":
+    return real_part_polar(tagged_impedance)
+  else:
+    raise ValueError(f"Unknown type tag: {type_tag(tagged_impedance)}")
 
 
 def imag_part(tagged_impedance: Impedance) -> float:
   """Returns the reactance regardless of representation, dispatching on type_tag."""
   if type_tag(tagged_impedance) == "rectangular":
-      return imag_part_rectangular(tagged_impedance)
-  return imag_part_polar(tagged_impedance)
+    return imag_part_rectangular(tagged_impedance)
+  elif type_tag(tagged_impedance) == "polar":
+    return imag_part_polar(tagged_impedance)
+  else:
+    raise ValueError(f"Unknown type tag: {type_tag(tagged_impedance)}")
 
 
 def magnitude(tagged_impedance: Impedance) -> float:
   """Returns the magnitude regardless of representation, dispatching on type_tag."""
   if type_tag(tagged_impedance) == "rectangular":
-      return magnitude_rectangular(tagged_impedance)
-  return magnitude_polar(tagged_impedance)
+    return magnitude_rectangular(tagged_impedance)
+  elif type_tag(tagged_impedance) == "polar":
+    return magnitude_polar(tagged_impedance)
+  else:
+    raise ValueError(f"Unknown type tag: {type_tag(tagged_impedance)}") 
 
 
 def angle(tagged_impedance: Impedance) -> float:
   """Returns the phase angle regardless of representation, dispatching on type_tag."""
   if type_tag(tagged_impedance) == "rectangular":
-      return angle_rectangular(tagged_impedance)
-  return angle_polar(tagged_impedance)
+    return angle_rectangular(tagged_impedance)
+  elif type_tag(tagged_impedance) == "polar":
+    return angle_polar(tagged_impedance)
+  else:
+    raise ValueError(f"Unknown type tag: {type_tag(tagged_impedance)}")
 
 
 def add_impedance(first_impedance: Impedance, second_impedance: Impedance) -> Impedance:

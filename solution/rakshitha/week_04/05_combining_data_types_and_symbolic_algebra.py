@@ -272,6 +272,15 @@ install_polynomial_operations()
 fee_plus_rate: TaggedValue = add_generic(setup_fee, interest_rate)
 projected_balance_at_year_three: float = evaluate_polynomial(growth_polynomial, 3.0)
 
+def build_growth_projection()->float:
+    projected_balance  = make_plain_number(
+        int(projected_balance_at_year_three)
+    )
+    total = add_generic(projected_balance, fee_plus_rate)
+
+    return numerator(total)/ denominator(total)
+total_obligation_estimate: float = build_growth_projection()
+
 print(numerator(make_rational(2, 4)))  # expect 1
 print(denominator(make_rational(2, 4)))  # expect 2
 print(numerator(make_rational(-3, -9)))  # expect 1

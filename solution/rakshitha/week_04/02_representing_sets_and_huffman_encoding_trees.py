@@ -36,7 +36,7 @@ def adjoin_set(alert_code: str, alert_set: Sequence[str]) -> tuple[str, ...]:
   while low <= high:
     mid = (low + high) // 2
     if alert_set[mid] == alert_code:
-      return alert_set
+      return tuple(alert_set)
     elif alert_set[mid] < alert_code:
       low = mid + 1
     else:

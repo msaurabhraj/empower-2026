@@ -34,19 +34,16 @@ def is_sum(expression: Expression) -> bool:
 def make_sum(addend: Expression, augend: Expression) -> Expression:
   """Constructor. No simplification is required (e.g. make_sum(0, x) need not simplify to x)."""
   return ('+', addend, augend)
-  raise NotImplementedError
 
 
 def addend(sum_expression: Expression) -> Expression:
   """Selector. Only valid when is_sum(sum_expression) is True."""
   return sum_expression[1]
-  raise NotImplementedError
 
 
 def augend(sum_expression: Expression) -> Expression:
   """Selector. Only valid when is_sum(sum_expression) is True."""
   return sum_expression[2]
-  raise NotImplementedError
 
 
 def is_product(expression: Expression) -> bool:
@@ -124,3 +121,4 @@ print(derivative(3, "x"))  # expect 0
 print(marginal_cost_formula)  # expect a tree that, read literally, equals 'usage_rate'
 
 # Once you see marginal_cost_formula, it comes out to exactly "usage_rate" — but that is only correct if usage_rate is a true constant with respect to usage_amount, and the original prose requirement never actually said that; it is equally consistent with a tiered or graduated pricing scheme where usage_rate itself depends on how much has already been used. Evaluating the requirement literally, as a symbolic expression, is what exposes this ambiguity — the prose alone let it hide. Write 2-3 sentences identifying the follow-up question you would need to ask a stakeholder to resolve it.
+# Need to confirm if usage_rate is fixed or varies based on usage tiers. If it is tiered pricing, we need the tier thresholds and corresponding rates before we can determine the correct marginal cost formula.
