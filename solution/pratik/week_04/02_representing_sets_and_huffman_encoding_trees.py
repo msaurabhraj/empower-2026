@@ -9,7 +9,6 @@ Sets of alert codes below are represented as sorted tuples rather than unordered
 """
 
 from collections.abc import Sequence
-from platform import node
 
 type HuffmanLeaf = tuple[str, str, int]
 type HuffmanTree = tuple[str, HuffmanLeaf | HuffmanTree, HuffmanLeaf | HuffmanTree, list[str], int]
@@ -122,8 +121,8 @@ def adjoin_leaf_set(
 def make_leaf_set(symbol_weight_pairs: Sequence[tuple[str, int]]) -> tuple[HuffmanLeaf, ...]:
   """Turn a sequence of (symbol, weight) pairs into a weight-sorted tuple of leaves, built by repeated adjoin_leaf_set calls."""
   result_set: tuple[HuffmanLeaf, ...] = ()
-  for symbol, weight in symbol_weight_pairs:
-    leaf = make_leaf(symbol, weight)
+  for symbol, wt in symbol_weight_pairs:
+    leaf = make_leaf(symbol, wt)
     result_set = adjoin_leaf_set(leaf, result_set)
   return result_set
 

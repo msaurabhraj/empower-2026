@@ -148,3 +148,7 @@ print(derivative(3, "x"))  # expect 0
 print(marginal_cost_formula)  # expect a tree that, read literally, equals 'usage_rate'
 
 # Once you see marginal_cost_formula, it comes out to exactly "usage_rate" — but that is only correct if usage_rate is a true constant with respect to usage_amount, and the original prose requirement never actually said that; it is equally consistent with a tiered or graduated pricing scheme where usage_rate itself depends on how much has already been used. Evaluating the requirement literally, as a symbolic expression, is what exposes this ambiguity — the prose alone let it hide. Write 2-3 sentences identifying the follow-up question you would need to ask a stakeholder to resolve it.
+
+# A key follow-up question would be:
+# Does usage_rate remain fixed regardless of the customer's usage, or can it change based on the amount used (for example, through tiered or volume-based pricing)?
+# If usage_rate is a constant, then the marginal cost with respect to usage_amount is simply usage_rate. However, if usage_rate itself depends on usage_amount, then the billing formula should represent that dependency explicitly, and the derivative must account for the changing rate rather than treating it as a constant.
