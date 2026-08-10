@@ -14,7 +14,7 @@ from sys import implementation
 type OperationTable = dict[tuple[str, str], Callable[..., object]]
 
 _operation_table: OperationTable = {}
-
+# this is the knowledge base of the system, where all implementations are stored. It is a dict mapping (operation_name, type_tag) to implementation functions.
 
 def put(operation_name: str, type_tag: str, implementation: Callable[..., object]) -> None:
    """Installs implementation into the global operation table under the key (operation_name, type_tag), overwriting any prior entry for that exact key."""
@@ -22,57 +22,51 @@ def put(operation_name: str, type_tag: str, implementation: Callable[..., object
 
 
 def get(operation_name: str, type_tag: str) -> Callable[..., object]:
-  return _operation_table.get((operation_name, type_tag))
   """Looks up and returns the implementation installed under (operation_name, type_tag), raising KeyError with a clear message if nothing has been installed for that combination."""
-  raise NotImplementedError
+  return _operation_table.get((operation_name, type_tag))
 
 
 def type_tag(tagged_package: tuple[str, dict[str, float]]) -> str:
-  return tagged_package[0]
   """Selector. Returns the type tag, the first element, of a tagged package record."""
-  raise NotImplementedError
+  return tagged_package[0]
 
 
 def package_contents(tagged_package: tuple[str, dict[str, float]]) -> dict[str, float]:
-  return tagged_package[1]
   """Selector. Returns the contents dict, the second element, of a tagged package record."""
-  raise NotImplementedError
+  return tagged_package[1]
 
 
 def apply_generic(operation_name: str, tagged_package: tuple[str, dict[str, float]]) -> object:
-  return get(operation_name, type_tag(tagged_package))(package_contents(tagged_package))
   """Looks up the implementation for (operation_name, type_tag(tagged_package)) via get(), calls it with package_contents(tagged_package), and returns the result — this is the single dispatch point every generic operation in this file goes through."""
-  raise NotImplementedError
+  return get(operation_name, type_tag(tagged_package))(package_contents(tagged_package))
 
 
 def cost(tagged_package: tuple[str, dict[str, float]]) -> float:
-  return apply_generic('cost', tagged_package)
   """Generic shipping cost, in dollars, for any installed package type. Must be implemented as apply_generic('cost', tagged_package) — nothing else."""
-  raise NotImplementedError
+  return apply_generic('cost', tagged_package)
 
 
 def delivery_days(tagged_package: tuple[str, dict[str, float]]) -> int:
-  return apply_generic('delivery-days', tagged_package)
   """Generic estimated delivery time, in days, for any installed package type. Must be implemented as apply_generic('delivery-days', tagged_package) — nothing else."""
-  raise NotImplementedError
+  return apply_generic('delivery-days', tagged_package)
 
 
 def install_standard_package() -> None:
-  return put ('cost', 'standard', lambda contents: 4.00+5.0*contents['weight_pounds']), put('delivery-days', 'standard', lambda contents: 5)
   """Installs 'cost' and 'delivery-days' implementations for the 'standard' type tag via put(). A standard package's contents dict has key 'weight_pounds'. Cost formula: $4.00 flat plus $0.50 per pound. Delivery estimate: flat 5 days."""
-  raise NotImplementedError
+  put('cost', 'standard', lambda contents: 4.00+5.0*contents['weight_pounds'])
+  put('delivery-days', 'standard', lambda contents: 5)
 
 
 def install_express_package() -> None:
-  return put('cost', 'express', lambda contents: 12.00+1.25*contents['weight_pounds']), put('delivery-days', 'express', lambda contents: 2)
   """Installs 'cost' and 'delivery-days' implementations for the 'express' type tag via put(). An express package's contents dict has key 'weight_pounds'. Cost formula: $12.00 flat plus $1.25 per pound. Delivery estimate: flat 2 days."""
-  raise NotImplementedError
+  put('cost', 'express', lambda contents: 12.00+1.25*contents['weight_pounds'])
+  put('delivery-days', 'express', lambda contents: 2)
 
 
 def install_freight_package() -> None:
-  return put('cost', 'freight', lambda contents: contents['weight_pounds']*(0.10+0.02*contents['distance_miles'])), put('delivery-days', 'freight', lambda contents: 3+(contents['distance_miles']+499)//500)
   """Installs 'cost' and 'delivery-days' implementations for the 'freight' type tag via put(). A freight package's contents dict has keys 'weight_pounds' and 'distance_miles'. Cost formula: weight_pounds * (0.10 + 0.02 * distance_miles). Delivery estimate: 3 days plus 1 additional day per 500 miles of distance_miles, rounded up."""
-  raise NotImplementedError
+  put('cost', 'freight', lambda contents: contents['weight_pounds']*(0.10+0.02*contents['distance_miles']))
+  put('delivery-days', 'freight', lambda contents: 3+(contents['distance_miles']+499)//500)
 
 
 """

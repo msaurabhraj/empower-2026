@@ -12,18 +12,18 @@ type Expression = int | float | str | tuple[str, Expression, Expression]
 
 
 def is_number(expression: Expression) -> bool:
-  if isinstance(expression, (int, float)):
-    return True
+    if isinstance(expression, (int, float)):
+     return True
+    return False
     """True if expression is a plain numeric literal (int or float), not a variable name or a compound expression."""
-    raise NotImplementedError
+
 
 
 def is_variable(expression: Expression) -> bool:
+  """True if expression is a bare variable name, represented as a str that is not one of the compound-expression tags ('+' or '*')."""
   if isinstance(expression, str) and expression not in('+', '*'):  # noqa: SIM103
     return True
   return False
-  """True if expression is a bare variable name, represented as a str that is not one of the compound-expression tags ('+' or '*')."""
-  raise NotImplementedError
 
 
 def is_same_variable(first_variable: Expression, second_variable: Expression) -> bool:
@@ -35,20 +35,15 @@ def is_same_variable(first_variable: Expression, second_variable: Expression) ->
 
 
 def is_sum(expression: Expression) -> bool:
+  """True if expression is a compound sum expression, i.e. a 3-tuple whose first element is the tag '+'."""
   if isinstance(expression, tuple) and expression[0] == '+':  # noqa: SIM103
     return True
   return False
-  """True if expression is a compound sum expression, i.e. a 3-tuple whose first element is the tag '+'."""
-  raise NotImplementedError
 
 
 def make_sum(addend: Expression, augend: Expression) -> Expression:
-  if is_sum((addend,augend)):
-    return (addend, augend)
-  return ('+', addend, augend)
-
   """Constructor. No simplification is required (e.g. make_sum(0, x) need not simplify to x)."""
-  raise NotImplementedError
+  return ('+', addend, augend)
 
 
 def addend(sum_expression: Expression) -> Expression:
@@ -66,20 +61,15 @@ def augend(sum_expression: Expression) -> Expression:
 
 
 def is_product(expression: Expression) -> bool:
+  """True if expression is a compound product expression, i.e. a 3-tuple whose first element is the tag '*'."""
   if isinstance(expression,tuple) and expression[0] == '*':  # noqa: SIM103
     return True
   return False
-  """True if expression is a compound product expression, i.e. a 3-tuple whose first element is the tag '*'."""
-  raise NotImplementedError
 
 
 def make_product(multiplier: Expression, multiplicand: Expression) -> Expression:
-  if is_product((multiplier, multiplicand)):
-    return(multiplier, multiplicand)
-  return('*', multiplier, multiplicand)
-
   """Constructor. No simplification is required (e.g. make_product(1, x) need not simplify to x)."""
-  raise NotImplementedError
+  return ('*', multiplier, multiplicand)
 
 
 def multiplier(product_expression: Expression) -> Expression:
