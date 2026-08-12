@@ -16,22 +16,24 @@ from math import gcd
 @dataclass(frozen=True, slots=True)
 class RationalNumber:
   """A rational number, always stored in lowest terms with a positive denominator."""
+
   _numerator: int
   _denominator: int
 
 
 def make_rational(numerator_value: int, denominator_value: int) -> RationalNumber:
   """Constructor. Must reduce to lowest terms and normalize the sign so the denominator is always positive (e.g. make_rational(1, -2) becomes -1/2)."""
-  if denominator_value==0:
+  if denominator_value == 0:
     raise ValueError("Denominator cannot be zero.")
-  divisor=gcd(numerator_value,denominator_value)
-  numerator_value //=divisor
-  denominator_value //=divisor
+  divisor = gcd(numerator_value, denominator_value)
+  numerator_value //= divisor
+  denominator_value //= divisor
 
-  if denominator_value<0:
-    numerator_value*=-1
-    denominator_value*=-1
-  return RationalNumber(numerator_value,denominator_value)
+  if denominator_value < 0:
+    numerator_value *= -1
+    denominator_value *= -1
+  return RationalNumber(numerator_value, denominator_value)
+
 
 def numerator(rational_number: RationalNumber) -> int:
   """Selector."""
@@ -45,30 +47,30 @@ def denominator(rational_number: RationalNumber) -> int:
 
 def add_rational(first_rational: RationalNumber, second_rational: RationalNumber) -> RationalNumber:
   """first_rational + second_rational, returned in lowest terms."""
-  new_numerator=(numerator(first_rational)*denominator(second_rational)+numerator(second_rational)*denominator(first_rational))
-  new_denominator=(denominator(first_rational)*denominator(second_rational))
-  return make_rational(new_numerator,new_denominator)
+  new_numerator = numerator(first_rational) * denominator(second_rational) + numerator(second_rational) * denominator(
+    first_rational
+  )
+  new_denominator = denominator(first_rational) * denominator(second_rational)
+  return make_rational(new_numerator, new_denominator)
 
 
 def multiply_rational(first_rational: RationalNumber, second_rational: RationalNumber) -> RationalNumber:
   """first_rational * second_rational, returned in lowest terms."""
-  new_numerator=numerator(first_rational)*numerator(second_rational)
-  new_denominator=denominator(first_rational)*denominator(second_rational)
-  return make_rational(new_numerator,new_denominator)
+  new_numerator = numerator(first_rational) * numerator(second_rational)
+  new_denominator = denominator(first_rational) * denominator(second_rational)
+  return make_rational(new_numerator, new_denominator)
 
 
 def equal_rational(first_rational: RationalNumber, second_rational: RationalNumber) -> bool:
   """True if the two rational numbers represent the same value."""
-  return(
-    numerator(first_rational)*denominator(second_rational)==numerator(second_rational) * denominator(first_rational)
+  return numerator(first_rational) * denominator(second_rational) == numerator(second_rational) * denominator(
+    first_rational
   )
-
 
 
 def rational_to_string(rational_number: RationalNumber) -> str:
   """e.g. RationalNumber(1, 2) -> "1/2"."""
   return f"{numerator(rational_number)}/{denominator(rational_number)}"
-
 
 
 """
@@ -82,19 +84,15 @@ Implement this using ONLY add_rational, equal_rational, and make_rational — ne
 
 def total_claimed_share(shares: list[RationalNumber]) -> RationalNumber:
   """Sum every share in the list into a single RationalNumber."""
-  total=make_rational(0,1)
+  total = make_rational(0, 1)
   for share in shares:
-    total=add_rational(total,share)
+    total = add_rational(total, share)
   return total
-  
+
 
 def is_bill_fully_claimed(shares: list[RationalNumber]) -> bool:
   """True if total_claimed_share(shares) equals exactly one whole (1/1)."""
-  return equal_rational(
-    total_claimed_share(shares),
-    make_rational(1,1)
-  )
- 
+  return equal_rational(total_claimed_share(shares), make_rational(1, 1))
 
 
 # Quick manual checks — replace/extend with real assertions once implemented.

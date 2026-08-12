@@ -35,7 +35,7 @@ class Money:
 
 def make_money(amount_in_cents: int, currency_code: str) -> Money:
   """Constructor."""
-  return Money(amount_in_cents,currency_code)
+  return Money(amount_in_cents, currency_code)
 
 
 def amount_in_cents(money_value: Money) -> int:
@@ -47,26 +47,25 @@ def currency_code(money_value: Money) -> str:
   """Selector."""
   return money_value._currency_code
 
+
 # --- Layer 2: operations, built only from Layer 1 ----------------------------
 
 
 def add_money(first_amount: Money, second_amount: Money) -> Money:
   """Add two Money values. Raise ValueError if currency codes differ."""
-  if currency_code(first_amount)!=currency_code(second_amount):
+  if currency_code(first_amount) != currency_code(second_amount):
     raise ValueError("Currencies must match")
-  return make_money(amount_in_cents(first_amount)+amount_in_cents(second_amount),currency_code(first_amount))
+  return make_money(amount_in_cents(first_amount) + amount_in_cents(second_amount), currency_code(first_amount))
 
 
 def multiply_money_by_scalar(money_value: Money, scalar: int) -> Money:
   """Scale a Money value by an integer factor (e.g. quantity of items)."""
-  return make_money(
-    amount_in_cents(money_value)*scalar,currency_code(money_value)
-  )
+  return make_money(amount_in_cents(money_value) * scalar, currency_code(money_value))
 
 
 def money_to_string(money_value: Money) -> str:
   """e.g. Money(1050, "USD") -> "10.50 USD"."""
-  dollars=amount_in_cents(money_value)/100
+  dollars = amount_in_cents(money_value) / 100
   return f"{dollars:.2f} {currency_code(money_value)}"
 
 
@@ -79,9 +78,9 @@ You have a list of Money transactions from a single receipt, all in the same cur
 
 def receipt_total(transactions: list[Money]) -> Money:
   """Sum every transaction on the receipt into a single Money value."""
-  total=make_money(0,currency_code(transactions[0]))
+  total = make_money(0, currency_code(transactions[0]))
   for transaction in transactions:
-    total=add_money(total,transaction)
+    total = add_money(total, transaction)
   return total
 
 

@@ -19,19 +19,19 @@ type Tree[T] = T | list[Tree[T]]  # a leaf of type T, or a list of smaller Trees
 
 def count_leaves_by_recursion[T](tree: Tree[T]) -> int:
   """Count every leaf in the (possibly deeply nested) tree, using direct recursion over the structure."""
-  if not isinstance(tree,list):
+  if not isinstance(tree, list):
     return 1
-  total=0
+  total = 0
   for subtree in tree:
-    total+=count_leaves_by_recursion(subtree)
+    total += count_leaves_by_recursion(subtree)
   return total
 
 
 def flatten_tree[T](tree: Tree[T]) -> list[T]:
   """Flatten arbitrary nesting into a single flat list of leaves, using direct recursion over the structure."""
-  if not isinstance(tree,list):
-    return[tree]
-  result=[]
+  if not isinstance(tree, list):
+    return [tree]
+  result = []
   for subtree in tree:
     result.extend(flatten_tree(subtree))
   return result
@@ -60,15 +60,12 @@ organization_chart: Tree[str] = [
 
 def titles_matching(tree: Tree[str], keyword: str) -> list[str]:
   """Return every leaf title that contains keyword (case-insensitive), built as a sequence operation over flatten_tree(tree)."""
-  return[
-    title for title in flatten_tree(tree)
-    if keyword.lower() in title.lower()
-  ]
+  return [title for title in flatten_tree(tree) if keyword.lower() in title.lower()]
 
 
 def count_titles_matching(tree: Tree[str], keyword: str) -> int:
   """Same idea, but just the count — should be a one-line composition of functions you've already written, not a new recursive traversal."""
-  return len(titles_matching(tree,keyword))
+  return len(titles_matching(tree, keyword))
 
 
 print(count_leaves_by_recursion(organization_chart))  # expect 8

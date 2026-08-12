@@ -22,14 +22,15 @@ class Interval:
 
 def make_interval(lower_value: float, upper_value: float) -> Interval:
   """Constructor. Raise ValueError if lower_value > upper_value."""
-  if lower_value>upper_value:
+  if lower_value > upper_value:
     raise ValueError("Lower bound cannot exceed upper bound")
-  return Interval(lower_value,upper_value)
+  return Interval(lower_value, upper_value)
 
 
 def lower_bound(interval_value: Interval) -> float:
   """Selector."""
   return interval_value._lower_bound
+
 
 def upper_bound(interval_value: Interval) -> float:
   """Selector."""
@@ -37,31 +38,32 @@ def upper_bound(interval_value: Interval) -> float:
 
 
 def add_interval(first_interval: Interval, second_interval: Interval) -> Interval:
-  return make_interval(lower_bound(first_interval)+lower_bound(second_interval),upper_bound(first_interval)+upper_bound(second_interval))
+  return make_interval(
+    lower_bound(first_interval) + lower_bound(second_interval),
+    upper_bound(first_interval) + upper_bound(second_interval),
+  )
 
 
 def multiply_interval(first_interval: Interval, second_interval: Interval) -> Interval:
   """Result bounds are the min/max over all four combinations of the input bounds (needed because bounds may be negative)."""
-  p1=lower_bound(first_interval)*lower_bound(second_interval)
-  p2=lower_bound(first_interval)*upper_bound(second_interval)
-  p3=upper_bound(first_interval)*lower_bound(second_interval)
-  p4=upper_bound(first_interval)*upper_bound(second_interval)
-  return make_interval(
-    min(p1,p2,p3,p4),
-    max(p1,p2,p3,p4)
-  )
+  p1 = lower_bound(first_interval) * lower_bound(second_interval)
+  p2 = lower_bound(first_interval) * upper_bound(second_interval)
+  p3 = upper_bound(first_interval) * lower_bound(second_interval)
+  p4 = upper_bound(first_interval) * upper_bound(second_interval)
+  return make_interval(min(p1, p2, p3, p4), max(p1, p2, p3, p4))
 
 
 def divide_interval(first_interval: Interval, second_interval: Interval) -> Interval:
   """Divide by multiplying by the reciprocal interval. Raise ValueError if second_interval spans zero (i.e. lower_bound <= 0 <= upper_bound)."""
-  if lower_bound(second_interval)<=0<=upper_bound(second_interval):
+  if lower_bound(second_interval) <= 0 <= upper_bound(second_interval):
     raise ValueError("Cannot divide by zero")
-  reciprocal=make_interval(1/upper_bound(second_interval),1/lower_bound(second_interval))
-  return multiply_interval(first_interval,reciprocal)
+  reciprocal = make_interval(1 / upper_bound(second_interval), 1 / lower_bound(second_interval))
+  return multiply_interval(first_interval, reciprocal)
+
 
 def width_of_interval(interval_value: Interval) -> float:
   """Half the distance between the bounds — a measure of uncertainty."""
-  return (upper_bound(interval_value)-lower_bound(interval_value))/2
+  return (upper_bound(interval_value) - lower_bound(interval_value)) / 2
 
 
 """
@@ -77,13 +79,12 @@ Implement this over a list of Interval values, using ONLY the interval operation
 
 def parallel_resistance(resistors: list[Interval]) -> Interval:
   """Combine an arbitrary-length list of resistor Intervals into one equivalent-resistance Interval, wired in parallel."""
-  total=make_interval(0,0)
+  total = make_interval(0, 0)
   for resistor in resistors:
-    reciprocal=divide_interval(make_interval(1,1),resistor)
-    total=add_interval(total,reciprocal)
-  return divide_interval(
-    make_interval(1,1),total
-  )
+    reciprocal = divide_interval(make_interval(1, 1), resistor)
+    total = add_interval(total, reciprocal)
+  return divide_interval(make_interval(1, 1), total)
+
 
 resistor_one = make_interval(9.8, 10.2)
 resistor_two = make_interval(19.7, 20.3)

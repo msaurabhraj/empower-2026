@@ -25,7 +25,7 @@ def make_rational(numerator_value: int, denominator_value: int) -> RationalNumbe
   """Constructor. Must reduce to lowest terms and normalize the sign so the denominator is always positive (e.g. make_rational(1, -2) becomes -1/2)."""
   if denominator_value == 0:
     raise ValueError("Denominator cannot be zero")
-# the numbers -1/2 & 1/-2 are same to represent as first number we use this logic,this conversion is necessary to preserve the rational nummber concept
+  # the numbers -1/2 & 1/-2 are same to represent as first number we use this logic,this conversion is necessary to preserve the rational nummber concept
   if denominator_value < 0:
     numerator_value = -numerator_value
     denominator_value = -denominator_value
@@ -49,9 +49,8 @@ def denominator(rational_number: RationalNumber) -> int:
 
 def add_rational(first_rational: RationalNumber, second_rational: RationalNumber) -> RationalNumber:
   """first_rational + second_rational, returned in lowest terms."""
-  new_numerator = (
-    numerator(first_rational) * denominator(second_rational)
-    + numerator(second_rational) * denominator(first_rational)
+  new_numerator = numerator(first_rational) * denominator(second_rational) + numerator(second_rational) * denominator(
+    first_rational
   )
   new_denominator = denominator(first_rational) * denominator(second_rational)
   return make_rational(new_numerator, new_denominator)
@@ -66,9 +65,8 @@ def multiply_rational(first_rational: RationalNumber, second_rational: RationalN
 
 def equal_rational(first_rational: RationalNumber, second_rational: RationalNumber) -> bool:
   """True if the two rational numbers represent the same value."""
-  return (
-    numerator(first_rational) * denominator(second_rational)
-    == numerator(second_rational) * denominator(first_rational)
+  return numerator(first_rational) * denominator(second_rational) == numerator(second_rational) * denominator(
+    first_rational
   )
 
 
